@@ -19,7 +19,7 @@ namespace UPNP_Client
 
         public ServiceActions(
             SSDPResponseModel response,
-            DeviceService deviceService, 
+            DeviceService deviceService,
             UPNPHandler upnpHandler)
         {
             InitializeComponent();

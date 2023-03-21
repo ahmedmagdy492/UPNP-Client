@@ -74,6 +74,7 @@
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "UPNP Client";
+            Load += Form1_Load;
             flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
