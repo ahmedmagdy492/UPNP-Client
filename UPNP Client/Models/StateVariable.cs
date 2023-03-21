@@ -10,5 +10,6 @@ namespace UPNP_Client.Models
     {
         public string Name { get; set; }
         public string DataType { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

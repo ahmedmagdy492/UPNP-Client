@@ -34,6 +34,17 @@ namespace UPNP_Client
 
             dataGridActions.DataSource = scpd.ActionsList;
             dataGridTableState.DataSource = scpd.ServiceStateTable;
+
+            dataGridActions.DoubleClick += delegate
+            {
+                if (dataGridActions.SelectedRows.Count == 1)
+                {
+                    string actionName = dataGridActions.SelectedRows[0].Cells[0].Value.ToString();
+                    var action = scpd.ActionsList.FirstOrDefault(a => a.Name == actionName);
+                    ActionArguments actionArguments = new ActionArguments(action.Arguments);
+                    actionArguments.ShowDialog();
+                }
+            };
         }
     }
 }

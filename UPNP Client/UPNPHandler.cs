@@ -109,7 +109,8 @@ namespace UPNP_Client
                         scpdObject.ServiceStateTable.Add(new StateVariable
                         {
                             Name = stateVariable.FirstChild.FirstChild.Value,
-                            DataType = stateVariable.FirstChild.LastChild.Value,
+                            DataType = stateVariable.ChildNodes[1].InnerText,
+                            DefaultValue = stateVariable.LastChild.InnerText,
                         });
                     }
                 }

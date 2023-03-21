@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             splitContainer1 = new SplitContainer();
-            dataGridTableState = new DataGridView();
-            flowLayoutPanel2 = new FlowLayoutPanel();
-            label2 = new Label();
             dataGridActions = new DataGridView();
             flowLayoutPanel1 = new FlowLayoutPanel();
             label1 = new Label();
+            dataGridTableState = new DataGridView();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridTableState).BeginInit();
-            flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridActions).BeginInit();
             flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridTableState).BeginInit();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
@@ -64,38 +64,10 @@
             splitContainer1.SplitterDistance = 371;
             splitContainer1.TabIndex = 2;
             // 
-            // dataGridTableState
-            // 
-            dataGridTableState.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridTableState.Dock = DockStyle.Fill;
-            dataGridTableState.Location = new Point(0, 54);
-            dataGridTableState.Name = "dataGridTableState";
-            dataGridTableState.RowHeadersWidth = 51;
-            dataGridTableState.RowTemplate.Height = 29;
-            dataGridTableState.Size = new Size(501, 466);
-            dataGridTableState.TabIndex = 5;
-            // 
-            // flowLayoutPanel2
-            // 
-            flowLayoutPanel2.Controls.Add(label2);
-            flowLayoutPanel2.Dock = DockStyle.Top;
-            flowLayoutPanel2.Location = new Point(0, 0);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(501, 54);
-            flowLayoutPanel2.TabIndex = 4;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(10, 10);
-            label2.Margin = new Padding(10);
-            label2.Name = "label2";
-            label2.Size = new Size(118, 30);
-            label2.TabIndex = 1;
-            label2.Text = "Table State";
-            // 
             // dataGridActions
             // 
+            dataGridActions.AllowUserToAddRows = false;
+            dataGridActions.AllowUserToDeleteRows = false;
             dataGridActions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridActions.Dock = DockStyle.Fill;
             dataGridActions.Location = new Point(0, 59);
@@ -124,6 +96,38 @@
             label1.TabIndex = 0;
             label1.Text = "Actions";
             // 
+            // dataGridTableState
+            // 
+            dataGridTableState.AllowUserToAddRows = false;
+            dataGridTableState.AllowUserToDeleteRows = false;
+            dataGridTableState.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridTableState.Dock = DockStyle.Fill;
+            dataGridTableState.Location = new Point(0, 54);
+            dataGridTableState.Name = "dataGridTableState";
+            dataGridTableState.RowHeadersWidth = 51;
+            dataGridTableState.RowTemplate.Height = 29;
+            dataGridTableState.Size = new Size(501, 466);
+            dataGridTableState.TabIndex = 5;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.Controls.Add(label2);
+            flowLayoutPanel2.Dock = DockStyle.Top;
+            flowLayoutPanel2.Location = new Point(0, 0);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(501, 54);
+            flowLayoutPanel2.TabIndex = 4;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(10, 10);
+            label2.Margin = new Padding(10);
+            label2.Name = "label2";
+            label2.Size = new Size(118, 30);
+            label2.TabIndex = 1;
+            label2.Text = "Table State";
+            // 
             // ServiceActions
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -140,12 +144,12 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridTableState).EndInit();
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridActions).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridTableState).EndInit();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 
