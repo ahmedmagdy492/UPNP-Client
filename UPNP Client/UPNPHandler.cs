@@ -9,7 +9,7 @@ using UPNP_Client.Models;
 
 namespace UPNP_Client
 {
-    internal class UPNPHandler
+    public class UPNPHandler
     {
         public SSDPResponseModel ExtractHeaders(string payload)
         {
@@ -47,7 +47,7 @@ namespace UPNP_Client
             return ssdpResponse;
         }
 
-        public List<DeviceService> GetDeviceInfo(string location)
+        public async Task<List<DeviceService>> GetServiceList(string location)
         {
             var uri = new Uri(location);
 
@@ -56,7 +56,7 @@ namespace UPNP_Client
                 BaseAddress = new Uri(uri.Scheme + "://" + uri.Host + ":" + uri.Port)
             };
 
-            HttpResponseMessage response = httpClient.GetAsync(uri.PathAndQuery).Result;
+            HttpResponseMessage response = await httpClient.GetAsync(uri.PathAndQuery);
             var xmlDoc = new XmlDocument();
 
             xmlDoc.Load(response.Content.ReadAsStream());
@@ -81,6 +81,65 @@ namespace UPNP_Client
             }
 
             return deviceAvailableServiceList;
+        }
+
+        public async Task<SCPD> GetActionsList(string location, string servicePath)
+        {
+            var uri = new Uri(location);
+
+            HttpClient httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(uri.Scheme + "://" + uri.Host + ":" + uri.Port)
+            };
+
+            HttpResponseMessage response = await httpClient.GetAsync(servicePath);
+            var xmlDoc = new XmlDocument();
+
+            xmlDoc.Load(response.Content.ReadAsStream());
+
+            var scpd = xmlDoc.GetElementsByTagName("scpd");
+            var scpdObject = new SCPD();
+
+            for(int i = 0;i < scpd[0].ChildNodes.Count; i++)
+            {
+                if (scpd[0].ChildNodes[i].Name == "serviceStateTable")
+                {
+                    foreach(XmlElement stateVariable in scpd[0].ChildNodes[i])
+                    {
+                        scpdObject.ServiceStateTable.Add(new StateVariable
+                        {
+                            Name = stateVariable.FirstChild.FirstChild.Value,
+                            DataType = stateVariable.FirstChild.LastChild.Value,
+                        });
+                    }
+                }
+                else if(scpd[0].ChildNodes[i].Name == "actionList")
+                {
+                    foreach (XmlElement action in scpd[0].ChildNodes[i])
+                    {
+                        var deviceAction = new DeviceAction
+                        {
+                            Name = action.FirstChild.FirstChild.Value,
+                        };
+                        scpdObject.ActionsList.Add(deviceAction);
+
+                        foreach(XmlElement argument in action.ChildNodes)
+                        {
+                            if(argument.Name == "argumentList")
+                            {
+                                deviceAction.Arguments.Add(new DeviceActionArgument
+                                {
+                                    Name = argument.FirstChild.FirstChild.FirstChild.Value,
+                                    Direction = argument.FirstChild.ChildNodes[1].FirstChild.Value,
+                                    RelatedStateVariable = argument.LastChild.FirstChild.FirstChild.Value,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return scpdObject;
         }
     }
 }

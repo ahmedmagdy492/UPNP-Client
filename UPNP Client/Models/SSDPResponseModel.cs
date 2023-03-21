@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UPNP_Client.Models
 {
-    internal class SSDPResponseModel
+    public class SSDPResponseModel
     {
         public int Status { get; set; }
         public string Date { get; set; }

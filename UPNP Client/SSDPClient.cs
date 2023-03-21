@@ -14,10 +14,15 @@ namespace UPNP_Client
         private Socket _socket;
         private int _port;
 
+        public delegate Task ReceiveSSDPResponse(string data);
+
+        private bool _isRunning;
+
         public SSDPClient()
         {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _port = 1900;
+            _isRunning = true;
         }
 
         private void InitBufferArray(byte[] buffer)
@@ -28,7 +33,7 @@ namespace UPNP_Client
             }
         }
 
-        public void SearchForDevices()
+        public async Task SearchForDevices()
         {
             StringBuilder payload = new StringBuilder("M-SEARCH * HTTP/1.1\r\n");
             payload.Append("HOST: 239.255.255.250:1900\r\n");
@@ -37,10 +42,12 @@ namespace UPNP_Client
             payload.Append("USER-AGENT: Ahmed Magdy Device\r\n");
             payload.Append("ST: upnp:rootdevice\r\n\r\n");
 
-            _socket.SendTo(Encoding.UTF8.GetBytes(payload.ToString()), new IPEndPoint(IPAddress.Parse("239.255.255.250"), _port));
+            await Task.Run(() => {
+                _socket.SendTo(Encoding.UTF8.GetBytes(payload.ToString()), new IPEndPoint(IPAddress.Parse("239.255.255.250"), _port));
+            });
         }
 
-        public void RecvFromOtherDevices(Action<string> callback)
+        public async Task RecvFromOtherDevices(ReceiveSSDPResponse callback)
         {
             if (_socket == null)
                 throw new Exception("Uninitialized Socket");
@@ -48,17 +55,36 @@ namespace UPNP_Client
             byte[] recvData = new byte[8192];
             EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-            while (true)
+            await Task.Run(async () =>
             {
-                InitBufferArray(recvData);
-                
-                _socket.ReceiveFrom(recvData, SocketFlags.None, ref remoteEndPoint);
+                while (true)
+                {
+                    if(!_isRunning)
+                    {
+                        break;
+                    }
 
-                callback(Encoding.UTF8.GetString(recvData));
-            }
+                    InitBufferArray(recvData);
+
+                    await _socket.ReceiveFromAsync(
+                        new ArraySegment<byte>(recvData),
+                        SocketFlags.None,
+                        remoteEndPoint
+                    );
+
+                    await callback(Encoding.UTF8.GetString(recvData));
+                }
+            });
+
+            Dispose();
         }
 
-        public void Dispose()
+        public void Stop()
+        {
+            _isRunning = false;
+        }
+
+        private void Dispose()
         {
             if(_socket != null )
             {
